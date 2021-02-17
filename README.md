@@ -1,4 +1,4 @@
-# QLearning_drone
+# UAV SWARM PATH PLANNING WITH REINFORCEMENT LEARNING FOR FIELD PROSPECTING: PRELIMINARY RESULTS
 
 System for the coordination of UAV swarms for Path Planning in agricultural fields. Made in Python 3 with Open Source libraries.
 
