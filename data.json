@@ -1,0 +1,59 @@
+{
+  "drones": [
+    {
+      "name": "Xiaomi Mi Drone",
+      "battery_time": 27,
+      "image_size": {
+        "w": 3840,
+        "h": 2160
+      },
+      "image_angle": 104,
+      "speed": 18,
+      "height": 12
+    },
+    {
+      "name": "Xiaomi_Mi_Drone",
+      "battery_time": 27,
+      "image_size": {
+        "w": 3840,
+        "h": 2160
+      },
+      "image_angle": 104,
+      "speed": 18,
+      "height": 12
+    },
+    {
+      "name": "Xiaomi_Mi_Drone",
+      "battery_time": 27,
+      "image_size": {
+        "w": 3840,
+        "h": 2160
+      },
+      "image_angle": 104,
+      "speed": 18,
+      "height": 6
+    }
+  ],
+  "points": [
+    {
+      "lat": 43.334799,
+      "long": -8.412510
+      },{
+      "lat": 43.333987,
+      "long": -8.411464
+      },{
+      "lat": 43.333507,
+      "long": -8.412168
+      },{
+      "lat": 43.333337,
+      "long": -8.413867
+      },{
+      "lat": 43.334284,
+      "long": -8.413229
+      }
+  ],
+  "operator_position": {
+      "lat": 43.334799,
+      "long": -8.412505
+      }
+}
