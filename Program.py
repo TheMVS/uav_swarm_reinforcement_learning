@@ -202,22 +202,11 @@ class Program:
         from Agent.Agent import Agent
         self.__agents = []
         for drone in program.get_drones():  # Create Reinforcement Learning Agents
-            if not Config.CONTINUE_EXPERIMENT:
-                self.__agents.append(
-                    Agent(drone.get_name(), count, drone.get_battery_time(),
-                          drone.get_speed(),
-                          program.compute_minimum_area(self.__drones), (0, 0), self.__original_environment))
-            else:
-                import pickle
-                import os.path
-                if os.path.isfile('agent_{0}.pkl'.format(str(count))):
-                    with open('agent_' + str(count) + '.pkl', 'rb') as input:
-                        self.__agents.append(pickle.load(input))
-                else:
-                    self.__agents.append(
-                        Agent(drone.get_name(), count, drone.get_battery_time(),
-                              drone.get_speed(),
-                              program.compute_minimum_area(self.__drones), (0, 0), self.__original_environment))
+            self.__agents.append(
+                Agent(drone.get_name(), count, drone.get_battery_time(),
+                      drone.get_speed(),
+                      program.compute_minimum_area(self.__drones), (0, 0), self.__original_environment))
+
             count += 1
 
         # Get number of observation episodes
@@ -225,26 +214,14 @@ class Program:
 
         import time
         global_execution_start_time = time.time()
-
-        if Config.CONTINUE_EXPERIMENT:
-            import json
-            with open('checkpoint.json', 'r') as infile:
-                data = json.load(infile)
-                start_number = data['observation'] + 1
-                Config.EPSILON = data['epsilon']
-                done_count = data['done_count']  # Number of times problem has been solved
-        else:
-            start_number = 0
-            done_count = 0  # Number of times problem has been solved
+        start_number = 0
+        done_count = 0  # Number of times problem has been solved
 
         # Get epsilon
         epsilon = Config.EPSILON
 
         # Save epsilon for plotting
-        if Config.CONTINUE_EXPERIMENT:
-            epsilons = data['epsilons']
-        else:
-            epsilons = [epsilon]
+        epsilons = [epsilon]
 
         # Total repetitions in all episodes
         total_unchanged_environment_episodes_count = 0
@@ -253,35 +230,19 @@ class Program:
         max_coverage = 0.0
 
         # Max coverage lists for plotting for the whole experiment
-        if Config.CONTINUE_EXPERIMENT:
-            max_coverages = data['max_coverages']
-        else:
-            max_coverages = []
+        max_coverages = []
 
         # Simulations' times
-        if Config.CONTINUE_EXPERIMENT:
-            episodes_time = data['episodes_time']
-        else:
-            episodes_time = []
+        episodes_time = []
 
         # Simulations' total rewards
-        if Config.CONTINUE_EXPERIMENT:
-            rewards_episodes = data['rewards_episodes']
-        else:
-            rewards_episodes = []
+        rewards_episodes = []
 
         # Store total actions taken per observation
-        if Config.CONTINUE_EXPERIMENT:
-            episode_total_actions = data['episode_total_actions']
-            episode_total_valid_actions = data['episode_total_valid_actions']
-        else:
-            episode_total_actions = []
-            episode_total_valid_actions = []
+        episode_total_actions = []
+        episode_total_valid_actions = []
 
-        if Config.CONTINUE_EXPERIMENT:
-            valid_actions_taken_agent = data['valid_actions_taken_agent']
-        else:
-            valid_actions_taken_agent = []
+        valid_actions_taken_agent = []
 
         # Compute episodes
         for episode_number in range(start_number, number_episodes):
@@ -306,14 +267,10 @@ class Program:
 
             # Create ANN if necessary
             if (Config.GLOBAL_MODEL):
-                if not Config.CONTINUE_EXPERIMENT:
-                    from numpy import dstack
-                    input_matrix = dstack((self.get_environment(), self.get_environment(), self.get_environment()))
-                    from Model.Model import create_model
-                    model = create_model(input_matrix.shape)
-                else:
-                    from keras.models import load_model
-                    model = load_model('global_model.h5')
+                from numpy import dstack
+                input_matrix = dstack((self.get_environment(), self.get_environment(), self.get_environment()))
+                from Model.Model import create_model
+                model = create_model(input_matrix.shape)
 
             # Get initial environment for starting observation
             actual_environment = program.get_environment()
@@ -490,10 +447,6 @@ class Program:
                         agent_history = agent.learn_global_model(self.get_environment(), model)
                         model.save('global_model.h5')
 
-                    import pickle
-                    with open('agent_' + str(agent.get_number()) + '.pkl', 'wb') as output:
-                        pickle.dump(agent, output, pickle.HIGHEST_PROTOCOL)
-
                     # Check experiment stopping
                     waiting_hours = float(time.time() - start_time) / 60.0 / 60.0  # Convert seconds to hours
 
@@ -634,20 +587,6 @@ class Program:
             plt.savefig('epsilons.png')
             plt.clf()
 
-            #import numpy as np
-            #if (average_episode_time + np.sum(episodes_time)) >= Config.MAX_EXPERIMENT_TIME:
-            import json
-            experiment_status = {'epsilon': epsilon, 'observation': episode_number, 'done_count': done_count,
-                                 'seed': Config.SEED, 'epsilons': epsilons, 'max_coverages': max_coverages,
-                                 'valid_actions_taken_agent': valid_actions_taken_agent,
-                                 'episode_total_actions': episode_total_actions,
-                                 'episode_total_valid_actions': episode_total_valid_actions,
-                                 'rewards_episodes': rewards_episodes, 'episodes_time': episodes_time,
-                                 'coverages_episode': coverages_episode}
-            with open('checkpoint.json', 'w') as outfile:
-                json.dump(experiment_status, outfile)
-            np.savetxt('visited_map.txt', np.array(np.ceil(np.sum(visited_list, axis=0)), dtype=float))
-
             # Update epsilon
             # The lower the epsilon, less random actions are taken
             epsilon = max(Config.MIN_EPSILON, epsilon * Config.EPSILON_DECAY)
@@ -656,14 +595,9 @@ class Program:
 def specify_random_seed():
     import numpy as np
 
-    if Config.SEED == None and not Config.CONTINUE_EXPERIMENT:
+    if Config.SEED == None:
         # Get random seed
         Config.SEED = np.random.randint(1, 255)
-    elif Config.CONTINUE_EXPERIMENT:
-        import json
-        with open('checkpoint.json', 'r') as infile:
-            data = json.load(infile)
-            Config.SEED = data['seed']
 
             # 1. Set `PYTHONHASHSEED` environment variable at a fixed value
     import os
@@ -739,11 +673,10 @@ if __name__ == '__main__':
     program.read_data()
 
     print('\n\n\nCompute flying environment')
-    if not (Config.CONTINUE_EXPERIMENT or Config.LOAD_MAP_FILE):
+    if not Config.LOAD_MAP_FILE:
         program.compute_environment()
     else:
         import numpy as np
-
         program.set_environment(np.loadtxt(Config.BASE_ROUTE + Config.MAP_ROUTE))
 
     print('\n\n\nCompute flying path')

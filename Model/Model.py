@@ -5,7 +5,8 @@ def create_model(input_shape):
         from keras import Input, models
         from keras.layers import Flatten, Dense
 
-        y = Input(shape=input_shape) z = Flatten()(y)
+        y = Input(shape=input_shape)
+        z = Flatten()(y)
         z = Dense(Config.DENSE1_SIZE, activation=Config.DENSE1_ACTIVATION)(z)
         z = Dense(Config.DENSE2_SIZE, activation=Config.DENSE2_ACTIVATION)(z)
 

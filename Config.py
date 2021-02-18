@@ -4,9 +4,6 @@ SEED = None  # None if we want a random seed or a number if we want to specify a
 
 LOAD_MAP_FILE = False  # For loading map from a file
 
-CONTINUE_EXPERIMENT = False  # True if we want to resume experimentation (in case of timeout, error...)
-MAX_EXPERIMENT_TIME = 100  # Max hours for saving status of that experiment (Data Centers with maximun execution time)
-
 # FILES PATH
 BASE_ROUTE = './'
 DATA_ROUTE = 'data.json'
