@@ -1,8 +1,10 @@
-# QLearning_drone
+# UAV SWARM PATH PLANNING WITH REINFORCEMENT LEARNING FOR FIELD PROSPECTING: PRELIMINARY RESULTS
 
 System for the coordination of UAV swarms for Path Planning in agricultural fields. Made in Python 3 with Open Source libraries.
 
 Reinforcement Learning techniques are used for this system. To be more precise, it uses the Deep Q-Learning technique.
+
+This code is necessary to experiment with the preliminary results obtained.
 
 ## Installation
 
@@ -22,7 +24,7 @@ $ pip install -r requirements.txt
 The requirements.txt file includes the following libraries:
 
  * [numpy](https://numpy.org)
- * [pandas](https://pandas.pydata.org)
+ * [scipy](https://www.scipy.org)
  * [Shapely](https://shapely.readthedocs.io/en/latest/)
  * [Keras](https://keras.io)
  * [Matplotlib](https://matplotlib.org)
@@ -34,13 +36,13 @@ The requirements.txt file includes the following libraries:
 To run the system you must be in the root folder of the project and execute the file [Program.py](https://github.com/TheMVS/QLearning_drone/blob/master/Program.py):
 
 ```bash
-$ cd QLearning_drone
+$ cd av_swarm_learning_preliminary
 $ python Program.py
 ```
 
-### Configuration and other aspects
+### Configuration
 
-For more information on the use of the system and its settings and output data visit the project [wiki](https://github.com/TheMVS/QLearning_drone/wiki).
+All necessary data for experimented should be added to [data.json](https://github.com/TheMVS/uav_swarm_learning_preliminary/blob/main/data.json) and [Config.py](https://github.com/TheMVS/uav_swarm_learning_preliminary/blob/main/Config.py).
 
 ## Authors
 
