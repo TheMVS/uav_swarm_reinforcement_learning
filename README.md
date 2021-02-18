@@ -25,7 +25,6 @@ The requirements.txt file includes the following libraries:
 
  * [numpy](https://numpy.org)
  * [scipy](https://www.scipy.org)
- * [pandas](https://pandas.pydata.org)
  * [Shapely](https://shapely.readthedocs.io/en/latest/)
  * [Keras](https://keras.io)
  * [Matplotlib](https://matplotlib.org)
